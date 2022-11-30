@@ -1,0 +1,310 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Suganyamari/assignment1_reg/blob/main/suganya%20assignment\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 13,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "38zbheN1wBxV",
+        "outputId": "b633e214-5490-4ef7-c39b-679c642bea82"
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "suhh\n"
+          ]
+        }
+      ],
+      "source": [
+        "email=str(input())"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 14,
+      "metadata": {
+        "id": "d7X4LZGvwugy"
+      },
+      "outputs": [],
+      "source": [
+        "\n",
+        "import re\n",
+        "\n",
+        "regex = r'\\b[a-z.]+[0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b'\n",
+        "def check(email):\n",
+        "  if(re.match(regex,email)):\n",
+        "    return True\n",
+        "  else:\n",
+        "    return False\n",
+        "\n",
+        "\n",
+        "def ValidatePassword(password):\n",
+        "  SpecialSym =['~','!','@', '#','$','%','^','&','*','_','-']\n",
+        "  val = True\n",
+        "  if len(password) < 6:\n",
+        "    print('length should be at least 6')\n",
+        "    val = False\n",
+        "          \n",
+        "  if len(password) > 16:\n",
+        "    print('length should be not be greater than 16')\n",
+        "    val = False\n",
+        "          \n",
+        "  if not any(char.isdigit() for char in password):\n",
+        "    print('Password should have at least one number')\n",
+        "    val = False\n",
+        "          \n",
+        "  if not any(char.isupper() for char in password):\n",
+        "    print('Password should have at least one uppercase letter')\n",
+        "    val = False\n",
+        "          \n",
+        "  if not any(char.islower() for char in password):\n",
+        "    print('Password should have at least one lowercase letter')\n",
+        "    val = False\n",
+        "          \n",
+        "  if not any(char in SpecialSym for char in password):\n",
+        "    print('Password should have at least one of the symbols ~!@#$%^&*_-')\n",
+        "    val = False\n",
+        "  return val\n",
+        "\n",
+        "      "
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 15,
+      "metadata": {
+        "id": "tMFyPqRsxNqY"
+      },
+      "outputs": [],
+      "source": [
+        "import csv\n",
+        "def Savefile(email,password):\n",
+        "  data=[email,password]\n",
+        "  f=open('user_details.csv','a')\n",
+        "  obj=csv.writer(f)\n",
+        "  obj.writerow(data)\n",
+        "  f.close()"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 16,
+      "metadata": {
+        "id": "_qLv_wN37739"
+      },
+      "outputs": [],
+      "source": [
+        "import csv\n",
+        "f=open('user_details.csv','w')\n",
+        "obj=csv.writer(f)\n",
+        "obj.writerow([\"UserName\",\"Password\"])\n",
+        "f.close()"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 17,
+      "metadata": {
+        "id": "t3HtHdasxLXK"
+      },
+      "outputs": [],
+      "source": [
+        "import csv\n",
+        "def Checkfile_from_csv(email):\n",
+        "  f1=open('user_details.csv','r')\n",
+        "  obj1=csv.reader(f1)\n",
+        "  for user in obj1:\n",
+        "   #print(user)\n",
+        "   if email==user[0]:\n",
+        "    #print('This email available in csv file ')\n",
+        "    return True\n",
+        "   \n",
+        "  #print('This email not available in csv file')\n",
+        "  return False\n",
+        "  f1.close()"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 18,
+      "metadata": {
+        "id": "3ZqpMlRD3eGc"
+      },
+      "outputs": [],
+      "source": [
+        "import csv\n",
+        "def Check_both_empwd(email,password):\n",
+        "  data=[email,password]\n",
+        "  checklist=[]\n",
+        "  f2=open('user_details.csv','r')\n",
+        "  obj2=csv.reader(f2)\n",
+        "  for user in obj2:\n",
+        "   checklist.append(user)\n",
+        "  if data in checklist:\n",
+        "   #print('email and pwd exist')\n",
+        "   return True\n",
+        "  else:\n",
+        "   #print('email and pwd mot exists')\n",
+        "   return False\n",
+        "  f2.close()"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 19,
+      "metadata": {
+        "id": "1-qKglerDEiY"
+      },
+      "outputs": [],
+      "source": [
+        "import csv\n",
+        "def check_forgotten_pwd(email):\n",
+        "  f3=open('user_details.csv','r')\n",
+        "  obj3=csv.reader(f3)\n",
+        "  for user in obj3:\n",
+        "    #print(user[1])\n",
+        "    if email==user[0]:\n",
+        "      return user[1]\n",
+        "   \n",
+        "  return ''\n",
+        "  f3.close()\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 20,
+      "metadata": {
+        "id": "URcSjg0N5BHv"
+      },
+      "outputs": [],
+      "source": [
+        "def login_checking(email,password):\n",
+        "  if Check_both_empwd(email,password):\n",
+        "    print('you are succesfully login')\n",
+        "  else:\n",
+        "    print('pls enter vaild details')\n",
+        "    Login()"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 33,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "d7Bp39QK0GhI",
+        "outputId": "79408a40-81c9-4239-b86d-fa69726969c0"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "please select your choice  \r\n",
+            " Press no:1 for Registration  \r\n",
+            " Press no:2 for Login \r\n",
+            "  Press no:3 for Forgot Password \n",
+            "3\n",
+            "enter your email id:\n",
+            "muthu12@gmail.com\n",
+            "Muthu1@123\n"
+          ]
+        }
+      ],
+      "source": [
+        "def GetEmail():\n",
+        "  print(\"enter your email id:\")\n",
+        "  email=str(input())\n",
+        "  return email\n",
+        "\n",
+        "def GetPassword():\n",
+        "  print(\"enter your password:\")\n",
+        "  password=str(input())\n",
+        "  return password\n",
+        " \n",
+        "def Registration():\n",
+        "  email=GetEmail()\n",
+        "  if check(email):\n",
+        "    print('your email is valid')\n",
+        "  else:\n",
+        "    print('your email is not valid .. try again')\n",
+        "    Registration() \n",
+        "\n",
+        "  if Checkfile_from_csv(email):\n",
+        "    print('This mailid is already register,you can try another id')\n",
+        "    Registration()\n",
+        "  else:\n",
+        "   password=GetPassword()  \n",
+        "   if ValidatePassword(password): \n",
+        "     print('password is valid')\n",
+        "     Savefile(email,password)\n",
+        "     print('your mailid id successfully register')\n",
+        "   else:\n",
+        "      print('password is invalid')\n",
+        "      Registration()\n",
+        "\n",
+        " \n",
+        "\n",
+        "\n",
+        "def Login():\n",
+        "  email=GetEmail() \n",
+        "  if Checkfile_from_csv(email): \n",
+        "   password=GetPassword()  \n",
+        "   login_checking(email,password)\n",
+        "   #print('you are successfully login')\n",
+        "  else:\n",
+        "   print('email not found. pls register your details')\n",
+        "   Registration()\n",
+        "\n",
+        "  #if not there in file print('please register your details')\n",
+        "\n",
+        "def ForgotPassword():\n",
+        "   email=GetEmail()\n",
+        "   print(check_forgotten_pwd(email))\n",
+        "\n",
+        "print('please select your choice  \\r\\n Press no:1 for Registration  \\r\\n Press no:2 for Login \\r\\n  Press no:3 for Forgot Password ')\n",
+        "\n",
+        "choice=int(input())\n",
+        "\n",
+        "if(choice==1):\n",
+        "  Registration()\n",
+        "elif(choice==2):\n",
+        "  Login()\n",
+        "elif(choice==3):\n",
+        "  ForgotPassword()\n"
+      ]
+    }
+  ],
+  "metadata": {
+    "colab": {
+      "name": "Untitled1.ipynb",
+      "provenance": [],
+      "authorship_tag": "ABX9TyOnmMTTikwiK1XVQjtY9THd",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "display_name": "Python 3",
+      "name": "python3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 0
+}
